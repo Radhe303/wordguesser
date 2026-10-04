@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Co-Op Game Hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>🎮 Party Game Hub</h1>
+      <p class="subtitle">Select a game to play with your friends!</p>
+    </header>
+
+    <!-- 0. GAME SELECTION SCREEN -->
+    <div id="game-select-screen" class="card">
+      <h2>Choose a Game</h2>
+      <div class="game-cards-container">
+        
+        <!-- Game 1: Mind Reader -->
+        <div class="game-card active" id="select-mind-reader">
+          <div class="game-card-icon">🎯</div>
+          <h3>Mind Reader Co-Op</h3>
+          <p>Work together in up to 15-player rooms to guess the exact same word!</p>
+          <button class="btn primary">Play Game</button>
+        </div>
+
+        <!-- Game 2: Coming Soon -->
+        <!-- Game 2: Coming Soon -->
+        <div class="game-card disabled">
+         <div class="coming-soon-badge">COMING SOON</div>
+         <div class="game-card-icon">🎲</div>
+         <h3>Secret Game #2</h3>
+         <p>A brand new multiplayer experience is currently in development.</p>
+         <button class="btn secondary" disabled>Locked</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 1. JOIN / CREATE LOBBY SCREEN -->
+    <div id="setup-screen" class="card hidden">
+      <button id="back-to-games-btn" class="btn-back">← Back to Games</button>
+      <h2>Mind Reader Setup</h2>
+      <div class="input-group">
+        <label for="player-name">Your Nickname</label>
+        <input type="text" id="player-name" placeholder="Enter your name..." maxlength="15">
+      </div>
+
+      <button id="create-btn" class="btn primary">✨ Create New Room</button>
+
+      <div class="divider"><span>OR JOIN ROOM</span></div>
+
+      <div class="input-group">
+        <label for="room-code-input">Room Code</label>
+        <input type="text" id="room-code-input" placeholder="e.g. ABCD" maxlength="4">
+      </div>
+      <button id="join-btn" class="btn secondary">🚀 Join Room</button>
+      
+      <p id="error-msg" class="error-text"></p>
+    </div>
+
+    <!-- 2. LOBBY WAITING ROOM -->
+    <div id="lobby-screen" class="card hidden">
+      <div class="room-code-badge">
+        <span>Room Code:</span>
+        <strong id="display-room-code">----</strong>
+      </div>
+
+      <div class="lobby-header">
+        <h3>Connected Teammates (<span id="player-count">0</span>/15)</h3>
+      </div>
+      
+      <ul id="player-list" class="player-chips-list"></ul>
+
+      <div id="host-controls" class="hidden">
+        <button id="start-btn" class="btn success pulse">▶️ Start Game Now</button>
+      </div>
+      <p id="waiting-msg" class="info-text">⏳ Waiting for the host to start the game...</p>
+    </div>
+
+    <!-- 3. MAIN GAME SCREEN -->
+    <div id="game-screen" class="card hidden">
+      <div class="game-status-bar">
+        <div class="stat-box lives"><span class="icon">❤️</span> <span id="lives-display">6 Lives</span></div>
+        <div class="stat-box timer"><span class="icon">⏱️</span> <span id="timer-display">60</span>s</div>
+      </div>
+
+      <!-- Live Player Progress -->
+      <div class="players-progress-section">
+        <small>Teammates Status:</small>
+        <div id="live-player-chips" class="player-chips-list mini"></div>
+      </div>
+
+      <div class="input-section">
+        <h3>Type your guess:</h3>
+        <div class="input-wrapper">
+          <input type="text" id="guess-input" placeholder="Type a word..." autocomplete="off">
+          <button id="submit-guess-btn" class="btn primary">Submit</button>
+        </div>
+        <p id="submission-status" class="info-text"></p>
+      </div>
+
+      <div class="used-words-section">
+        <h4>🚫 Forbidden Previous Words:</h4>
+        <div id="used-words-list" class="tags-container">None yet</div>
+      </div>
+    </div>
+
+    <!-- 4. ROUND RESULT SCREEN -->
+    <div id="result-screen" class="card hidden">
+      <h2 id="result-heading">Round Results</h2>
+      <p id="match-status-msg" class="status-banner"></p>
+      
+      <h3>What Everyone Guessed:</h3>
+      <div id="guesses-grid" class="grid-container"></div>
+      
+      <p class="info-text pulse-text">⏳ Next round starting automatically in 5 seconds...</p>
+    </div>
+
+    <!-- 5. GAME OVER SCREEN -->
+    <div id="game-over-screen" class="card hidden">
+      <h2 id="game-over-title"></h2>
+      <p id="game-over-msg" class="status-banner"></p>
+      
+      <h3>Final Round Submissions:</h3>
+      <div id="final-guesses-grid" class="grid-container"></div>
+      
+      <button onclick="location.reload()" class="btn primary">🔄 Play Again</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="client.js"></script>
+</body>
+</html>

@@ -1,0 +1,347 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+  color: #f8fafc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 15px;
+}
+
+.container {
+  width: 100%;
+  max-width: 550px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 2.2rem;
+  color: #38bdf8;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  margin-top: 4px;
+}
+
+.card {
+  background: rgba(30, 41, 59, 0.85);
+  backdrop-filter: blur(12px);
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+}
+
+.hidden { display: none !important; }
+
+/* --- Game Selection Cards --- */
+.game-cards-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 15px;
+}
+
+.game-card {
+  position: relative;
+  background: #0f172a;
+  border: 2px solid #334155;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.game-card.active {
+  cursor: pointer;
+}
+
+.game-card.active:hover {
+  border-color: #38bdf8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.15);
+}
+
+.game-card.disabled {
+  opacity: 0.6;
+  filter: grayscale(0.4);
+}
+
+.coming-soon-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #f59e0b;
+  color: #000;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.game-card-icon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.game-card h3 {
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.game-card p {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin-bottom: 15px;
+}
+
+.btn-back {
+  background: transparent;
+  border: none;
+  color: #38bdf8;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 15px;
+  display: inline-block;
+  font-size: 0.9rem;
+}
+
+.btn-back:hover {
+  text-decoration: underline;
+}
+
+/* --- Form & UI Elements --- */
+.input-group {
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #cbd5e1;
+  font-size: 0.9rem;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 2px solid #334155;
+  background-color: #0f172a;
+  color: #ffffff;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+input[type="text"]:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+  color: #64748b;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #334155;
+}
+.divider span { padding: 0 10px; }
+
+.btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.1s ease, background 0.2s ease;
+}
+.btn:active { transform: scale(0.98); }
+
+.btn.primary { background-color: #0284c7; color: white; }
+.btn.primary:hover { background-color: #0369a1; }
+
+.btn.secondary { background-color: #334155; color: white; }
+.btn.secondary:hover { background-color: #475569; }
+
+.btn.success { background-color: #16a34a; color: white; }
+.btn.success:hover { background-color: #15803d; }
+
+.room-code-badge {
+  background: #0f172a;
+  border: 2px dashed #38bdf8;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.1rem;
+}
+.room-code-badge strong {
+  font-size: 1.6rem;
+  color: #38bdf8;
+  letter-spacing: 2px;
+  margin-left: 8px;
+}
+
+.player-chips-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 15px 0;
+  justify-content: center;
+}
+
+.player-chip {
+  background: #334155;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.player-chip.is-self {
+  border: 2px solid #38bdf8;
+  background: #1e293b;
+}
+
+.player-chip .host-icon { color: #fbbf24; }
+
+.game-status-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.stat-box {
+  flex: 1;
+  background: #0f172a;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.stat-box.lives { color: #f87171; }
+.stat-box.timer { color: #fbbf24; }
+
+.input-wrapper {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.input-wrapper input { flex: 1; }
+.input-wrapper .btn { width: auto; padding: 0 20px; }
+
+.used-words-section {
+  margin-top: 20px;
+  border-top: 1px solid #334155;
+  padding-top: 15px;
+  text-align: left;
+}
+.used-words-section h4 { color: #94a3b8; font-size: 0.85rem; }
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.tag {
+  background: #ef4444;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: line-through;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.guess-card {
+  background: #0f172a;
+  border: 1px solid #334155;
+  padding: 14px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.guess-card .player-name {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  font-weight: bold;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.guess-card .word {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #38bdf8;
+  word-break: break-word;
+}
+
+.status-banner {
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  margin: 12px 0;
+  background: #334155;
+}
+
+.error-text { color: #f87171; margin-top: 8px; font-weight: 600; font-size: 0.9rem; }
+.info-text { color: #94a3b8; margin-top: 10px; font-size: 0.9rem; }
+.pulse-text { animation: pulseAnim 1.5s infinite; }
+
+@keyframes pulseAnim {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
