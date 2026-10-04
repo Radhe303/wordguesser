@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Co-Op Game Hub</title>
+  <title>Party Game Hub</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
     <header class="header">
       <h1>🎮 Party Game Hub</h1>
-      <p class="subtitle">Select a game to play with your friends!</p>
+      <p class="subtitle">Select a game to play with friends!</p>
     </header>
 
     <!-- 0. GAME SELECTION SCREEN -->
@@ -18,31 +18,27 @@
       <h2>Choose a Game</h2>
       <div class="game-cards-container">
         
-        <!-- Game 1: Mind Reader -->
         <div class="game-card active" id="select-mind-reader">
           <div class="game-card-icon">🎯</div>
           <h3>Mind Reader Co-Op</h3>
           <p>Work together in up to 15-player rooms to guess the exact same word!</p>
-          <button class="btn primary">Play Game</button>
+          <button class="btn primary">Play Mind Reader</button>
         </div>
 
-        <!-- Game 2: Coming Soon -->
-        <!-- Game 2: Coming Soon -->
-        <div class="game-card disabled">
-         <div class="coming-soon-badge">COMING SOON</div>
-         <div class="game-card-icon">🎲</div>
-         <h3>Secret Game #2</h3>
-         <p>A brand new multiplayer experience is currently in development.</p>
-         <button class="btn secondary" disabled>Locked</button>
+        <div class="game-card active" id="select-fake-artist">
+          <div class="game-card-icon">🎨</div>
+          <h3>Fake Artist / Shared Canvas</h3>
+          <p>Draw together on a whiteboard and catch the impostor who doesn't know the word!</p>
+          <button class="btn primary">Play Fake Artist</button>
         </div>
 
       </div>
     </div>
 
-    <!-- 1. JOIN / CREATE LOBBY SCREEN -->
+    <!-- 1. ROOM SETUP SCREEN -->
     <div id="setup-screen" class="card hidden">
       <button id="back-to-games-btn" class="btn-back">← Back to Games</button>
-      <h2>Mind Reader Setup</h2>
+      <h2 id="setup-title">Room Setup</h2>
       <div class="input-group">
         <label for="player-name">Your Nickname</label>
         <input type="text" id="player-name" placeholder="Enter your name..." maxlength="15">
@@ -61,7 +57,7 @@
       <p id="error-msg" class="error-text"></p>
     </div>
 
-    <!-- 2. LOBBY WAITING ROOM -->
+    <!-- 2. LOBBY SCREEN -->
     <div id="lobby-screen" class="card hidden">
       <div class="room-code-badge">
         <span>Room Code:</span>
@@ -69,7 +65,7 @@
       </div>
 
       <div class="lobby-header">
-        <h3>Connected Teammates (<span id="player-count">0</span>/15)</h3>
+        <h3>Connected Players (<span id="player-count">0</span>/15)</h3>
       </div>
       
       <ul id="player-list" class="player-chips-list"></ul>
@@ -77,20 +73,14 @@
       <div id="host-controls" class="hidden">
         <button id="start-btn" class="btn success pulse">▶️ Start Game Now</button>
       </div>
-      <p id="waiting-msg" class="info-text">⏳ Waiting for the host to start the game...</p>
+      <p id="waiting-msg" class="info-text">⏳ Waiting for host to start...</p>
     </div>
 
-    <!-- 3. MAIN GAME SCREEN -->
+    <!-- --- GAME 1: MIND READER SCREEN --- -->
     <div id="game-screen" class="card hidden">
       <div class="game-status-bar">
         <div class="stat-box lives"><span class="icon">❤️</span> <span id="lives-display">6 Lives</span></div>
         <div class="stat-box timer"><span class="icon">⏱️</span> <span id="timer-display">60</span>s</div>
-      </div>
-
-      <!-- Live Player Progress -->
-      <div class="players-progress-section">
-        <small>Teammates Status:</small>
-        <div id="live-player-chips" class="player-chips-list mini"></div>
       </div>
 
       <div class="input-section">
@@ -108,27 +98,77 @@
       </div>
     </div>
 
-    <!-- 4. ROUND RESULT SCREEN -->
-    <div id="result-screen" class="card hidden">
-      <h2 id="result-heading">Round Results</h2>
-      <p id="match-status-msg" class="status-banner"></p>
-      
-      <h3>What Everyone Guessed:</h3>
-      <div id="guesses-grid" class="grid-container"></div>
-      
-      <p class="info-text pulse-text">⏳ Next round starting automatically in 5 seconds...</p>
+    <!-- --- GAME 2: FAKE ARTIST WHITEBOARD SCREEN --- -->
+    <div id="fake-artist-screen" class="card hidden">
+      <div class="game-status-bar">
+        <div class="stat-box role"><span id="role-display">🎨 Role: Real Artist</span></div>
+        <div class="stat-box word"><span id="secret-word-display">Word: Elephant</span></div>
+      </div>
+
+      <div class="turn-bar">
+        <p id="current-turn-msg">Waiting for turn...</p>
+        <div class="stat-box timer mini">⏱️ <span id="fa-turn-timer">30</span>s</div>
+      </div>
+
+      <!-- Pure Whiteboard Canvas -->
+      <div class="whiteboard-wrapper">
+        <canvas id="paint-canvas" width="450" height="320"></canvas>
+      </div>
+
+      <!-- Rich Drawing Toolbar -->
+      <div id="drawing-controls" class="toolbar-container hidden">
+        <div class="swatches-row">
+          <button class="swatch active" style="background:#0f172a;" data-color="#0f172a"></button>
+          <button class="swatch" style="background:#ef4444;" data-color="#ef4444"></button>
+          <button class="swatch" style="background:#3b82f6;" data-color="#3b82f6"></button>
+          <button class="swatch" style="background:#10b981;" data-color="#10b981"></button>
+          <button class="swatch" style="background:#f59e0b;" data-color="#f59e0b"></button>
+          <button class="swatch" style="background:#8b5cf6;" data-color="#8b5cf6"></button>
+          <input type="color" id="brush-color" value="#0f172a" title="Custom Color">
+        </div>
+
+        <div class="tools-row">
+          <div class="size-slider">
+            <small>Size:</small>
+            <input type="range" id="brush-size" min="2" max="24" value="6">
+          </div>
+
+          <button id="undo-btn" class="btn-tool">↩️ Undo</button>
+          <button id="eraser-btn" class="btn-tool">🧹 Eraser</button>
+          <button id="finish-turn-btn" class="btn success small">✅ Done Line</button>
+        </div>
+      </div>
     </div>
 
-    <!-- 5. GAME OVER SCREEN -->
-    <div id="game-over-screen" class="card hidden">
-      <h2 id="game-over-title"></h2>
-      <p id="game-over-msg" class="status-banner"></p>
-      
-      <h3>Final Round Submissions:</h3>
-      <div id="final-guesses-grid" class="grid-container"></div>
-      
+    <!-- FAKE ARTIST VOTING INTERFACE -->
+    <div id="fa-voting-screen" class="card hidden">
+      <h2>🔍 Who is the Fake Artist?</h2>
+      <p class="subtitle">Discuss and click on the player you suspect! (Round <span id="fa-round-num">1</span>)</p>
+
+      <div id="voting-players-grid" class="voting-grid"></div>
+
+      <button id="skip-vote-btn" class="btn secondary">⏭️ Skip Vote (Draw Next Round)</button>
+      <p id="voting-status" class="info-text"></p>
+    </div>
+
+    <!-- IMPOSTOR FINAL GUESS POPUP SCREEN -->
+    <div id="impostor-guess-screen" class="card hidden">
+      <h2>🚨 IMPOSTOR CAUGHT!</h2>
+      <p id="impostor-guess-msg" class="subtitle">You were voted out! Guess the secret word to WIN!</p>
+      <div class="input-wrapper">
+        <input type="text" id="impostor-word-input" placeholder="Type secret word..." autocomplete="off">
+        <button id="submit-impostor-guess-btn" class="btn primary">Submit</button>
+      </div>
+    </div>
+
+    <!-- RESULTS & GAME OVER SCREEN -->
+    <div id="result-screen" class="card hidden">
+      <h2 id="result-heading">Game Finished!</h2>
+      <p id="match-status-msg" class="status-banner"></p>
+      <div id="guesses-grid" class="grid-container"></div>
       <button onclick="location.reload()" class="btn primary">🔄 Play Again</button>
     </div>
+
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
